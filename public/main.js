@@ -1,15 +1,19 @@
-Array.from(document.querySelectorAll('button'))
+Array.from(document.querySelectorAll('.action-button'))
     .forEach(b => {
-        // b.addEventListener('touchmove', e => {
-        //     e.stopPropagation();
-        //     e.preventDefault();
-        //     navigator.vibrate(50);
-        // });
+        ['touchenter', 'touchstart']
+            .forEach(evName => {
+                b.addEventListener(evName, e => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    navigator.vibrate(50);
+                });
+            });
+    });
 
-        b.addEventListener('touchstart', e => {
-            e.stopPropagation();
-            e.preventDefault();
-            navigator.vibrate(50);
-        });
-
+document.querySelector('#login')
+    .addEventListener('click', e => {
+        var provider = new firebase.auth.GoogleAuthProvider();
+        firebase.auth()
+            .signInWithPopup(provider)
+            .then(console.log);
     });

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../main.css">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Joystick</title>
+</head>
+
+<body>
+
+    <button id="login">login</button>
+    <button id="connect">Connect</button>
+
+    <h1 id="portrait">Vire seu celular</h1>
+    <div class="half">
+        <div class="buttons">
+            <div class="row">
+                <button class="action-button" id="up">▲</button>
+                <button class="action-button r90" id="right">▲</button>
+            </div>
+
+            <div class="row">
+                <button class="action-button r-90" id="left">▲</button>
+                <button class="action-button r180" id="down">▲</button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="half">
+        <div class="buttons">
+            <div class="row">
+                <button class="action-button" id="triangle">▲</button>
+                <button class="action-button" id="circle">●</button>
+            </div>
+
+            <div class="row">
+                <button class="action-button" id="square">■</button>
+                <button class="action-button" id="x">X</button>
+            </div>
+
+        </div>
+    </div>
+
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/simple-peer/8.2.0/simplepeer.min.js"></script>
+    <script defer src="../__/firebase/4.8.0/firebase-app.js"></script>
+    <script defer src="../__/firebase/4.8.0/firebase-auth.js"></script>
+    <script defer src="../__/firebase/4.8.0/firebase-database.js"></script>
+    <script defer src="../__/firebase/init.js"></script>
+    <script defer src="joystick.js"></script>
+</body>
+
+</html>

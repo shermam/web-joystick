@@ -2,19 +2,20 @@ const auth = firebase.auth();
 const h1 = document.querySelector('h1');
 
 auth.onAuthStateChanged(user => {
-    if (!user) { return;}
+    if (!user) { 
+        return auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+    }
     
-    const userData = firebase
-    .database()
-    .ref('users/' + user.uid);
+    const userData = firebase.database().ref('users/' + user.uid);
 
-    const p = new SimplePeer();
-    p.on('error', e => { 
+    const peer = new SimplePeer();
+
+    peer.on('error', e => { 
         userData.update({ joystickPage: 0, gamePage: 0 });
         console.log('error', err);
     })
     
-    p.on('signal', function (data) {
+    peer.on('signal', function (data) {
         console.log('SIGNAL', JSON.stringify(data))
         userData.update({ joystickPage: data });
     })
@@ -23,22 +24,17 @@ auth.onAuthStateChanged(user => {
         const value = snapShot.val();
         if (!value || !value.gamePage) {return}
         console.log(value);
-        p.signal(value.gamePage);
+        peer.signal(value.gamePage);
     });
 
-    p.on('connect', function () {
+    peer.on('connect', function () {
         console.log('CONNECT')
         userData.update({ joystickPage: 0, gamePage: 0 });
-        p.send('whatever' + Math.random())
+        peer.send('whatever' + Math.random())
     })
 
-    p.on('data', function (data) {
+    peer.on('data', function (data) {
         console.log('data: ' + data)
         h1.innerHTML = data;
     })
 });
-
-document.querySelector('#login')
-    .addEventListener('click', e => {
-        auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
-    });

@@ -35,7 +35,10 @@ auth.onAuthStateChanged(user => {
 
             p = new SimplePeer({ initiator: true });
             
-            p.on('error', function (err) { console.log('error', err) })
+            p.on('error', e => {
+                userData.update({ joystickPage: 0, gamePage: 0 });
+                console.log('error', err);
+            })
             
             p.on('signal', function (data) {
                 console.log('SIGNAL', JSON.stringify(data))
@@ -47,7 +50,6 @@ auth.onAuthStateChanged(user => {
                 if (!value || !value.joystickPage) { return }
                 console.log(value);
                 p.signal(value.joystickPage);
-                //userData.update({ joystickPage: 0 });
             });
 
             p.on('connect', function () {

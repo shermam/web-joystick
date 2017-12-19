@@ -64,6 +64,49 @@ body, html{
     transform: rotate(135deg);
 }
 
+#pointer{
+    width: 20vw;
+    height: 20vw;
+    top:50%;
+    left: 140px;
+    position: fixed;
+    background: rgba(0, 0, 255, 0.411);
+    border-radius: 50%;
+    border: 3px solid black;
+}
+
+#direction{
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    grid-template-areas: " .   up    .  "
+                         "left  .  right"
+                         " .  down   .  ";
+}
+
+.arrow{
+    width: 100%;
+}
+
+.up{
+    grid-area: up;
+    transform: rotate(-90deg);
+}
+
+.down{
+    grid-area: down;
+    transform: rotate(90deg);
+}
+
+.left{
+    grid-area: left;
+    transform: rotate(180deg);
+}
+
+.right{
+    grid-area: right;
+}
+
 #portrait{
     display: none;
 }

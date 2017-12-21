@@ -2,6 +2,19 @@ import connection from "../../connection.js";
 import regionFactory from "./region.js";
 
 const con = connection('joystickPage', 'gamePage', console.log);
+const direction = document.querySelector('#direction');
+const pointer = document.querySelector('#pointer');
+const region = regionFactory(direction);
+const mediaQueryList = window.matchMedia("(orientation: landscape)");
+
+let pointerRect = pointer.getBoundingClientRect();
+let lastRegion = null;
+
+mediaQueryList.addListener(handleOrientationChange);
+function handleOrientationChange(mql) { 
+    console.log(mql);
+    pointerRect = pointer.getBoundingClientRect();
+}
 
 function send(data) {
     con.peer.send(JSON.stringify(data));
@@ -16,22 +29,16 @@ Array.from(document.querySelectorAll('.action-button'))
                     e.preventDefault();
                     navigator.vibrate(50);
 
-                    const data = JSON.stringify({
+                    send({
                         event: evName,
                         code: e.target.id
                     });
 
-                    con.peer.send(data);
                 });
             });
     });
 
 
-const direction = document.querySelector('#direction');
-const pointer = document.querySelector('#pointer');
-const pointerRect = pointer.getBoundingClientRect();
-const region = regionFactory(direction);
-let lastRegion = null;
 
 ['touchstart', 'touchend', 'touchmove']
     .forEach(evName => {
@@ -61,7 +68,6 @@ let lastRegion = null;
                 type: evName
             });
 
-            console.log(currentRegion);
             lastRegion = currentRegion;
         });
     });

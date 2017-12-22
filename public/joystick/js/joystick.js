@@ -72,41 +72,70 @@
 
 const orientation = document.getElementById('orientation');
 const orientation2 = document.getElementById('orientation2');
-const orientation3 = document.getElementById('orientation3');
-
-// const orientation4 = document.getElementById('orientation4');
-// const orientation5 = document.getElementById('orientation5');
-// const orientation6 = document.getElementById('orientation6');
 
 const orientation7 = document.getElementById('orientation7');
 const orientation8 = document.getElementById('orientation8');
-const orientation9 = document.getElementById('orientation9');
 
 const r1 = document.getElementById('r1');
 const r2 = document.getElementById('r2');
 const r3 = document.getElementById('r3');
 const r4 = document.getElementById('r4');
 
+
+const centerTrashHold = 1;
+let centerTimeout;
+
+let offsetAlpha = 0;
+let offsetGamma = 0;
+
+let orientationAlpha = 0;
+let oriententionGamma = 0;
+
 addEventListener('devicemotion', e => {
     orientation.style.width = mapRange(e.rotationRate.alpha, 0, 2, 50, 100) + '%';
     orientation2.style.width = mapRange(e.rotationRate.beta, 0, 2, 50, 100) + '%';
-    r1.innerHTML = e.rotationRate.alpha.toFixed(3);
-    r2.innerHTML = e.rotationRate.beta.toFixed(3);
-    // orientation3.style.width = mapRange(e.rotationRate.gamma, 0, 10, 50, 100) + '%';
 
-    // orientation4.style.width = mapRange(e.acceleration.x, 0, 10, 50, 100) + '%';
-    // orientation5.style.width = mapRange(e.acceleration.y, 0, 10, 50, 100) + '%';
-    // orientation6.style.width = mapRange(e.acceleration.z, 0, 10, 50, 100) + '%'; 
+    r1.innerHTML = (e.rotationRate.alpha || 0).toFixed(3);
+    r2.innerHTML = (e.rotationRate.beta || 0).toFixed(3);
+
+    resetCenterTimeout(e.rotationRate.alpha, e.rotationRate.beta);
+
 });
 
 addEventListener('deviceorientation', e => {
-    orientation7.style.width = mapRange(e.alpha, 0, 360, 0, 100) + '%';
-    // orientation9.style.width = mapRange(e.beta, -180, 180, 0, 100) + '%';
-    orientation8.style.width = mapRange(e.gamma, -90, 90, 0, 100) + '%';
+    orientationAlpha = normalizeAlpha(e.alpha, e.gamma);
+    oriententionGamma = e.gamma;
 
-    r3.innerHTML = e.alpha.toFixed(3);
-    r4.innerHTML = e.gamma.toFixed(3);
+    orientation7.style.width = mapRange(orientationAlpha + offsetAlpha, 0, 360, 0, 100) + '%';
+    orientation8.style.width = mapRange(oriententionGamma + offsetGamma, -90, 90, 0, 100) + '%';
+
+    r3.innerHTML = (orientationAlpha || 0).toFixed(3);
+    r4.innerHTML = (oriententionGamma || 0).toFixed(3);
 });
+
+function normalizeAlpha(alpha, gamma) {
+    return ((gamma > 0 ? 0 : 180) + alpha) % 360;
+}
+
+function center() {
+    offsetAlpha = 180 - orientationAlpha;
+    offsetGamma = 0 - oriententionGamma;
+}
+
+function resetCenterTimeout(alpha, beta) {
+    if (alpha < centerTrashHold && beta < centerTrashHold) {
+        return;
+    }
+
+    clearTimeout(centerTimeout);
+
+    console.log('entrou aqui');
+
+    centerTimeout = setTimeout(() => {
+        center();
+        console.log("center");
+    }, 3000);
+};
 
 function mapRange(num, fromIni, toIni, fromFim, toFim) {
     var rangeInicio = toIni - fromIni;

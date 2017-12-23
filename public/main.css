@@ -5,6 +5,15 @@
     font-size: 30px;
 }
 
+.freeze-camera{
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    height: 60px;
+    width: 300px;
+    background: yellow;
+}
+
 body, html{
     display: flex;
     flex-direction: row;

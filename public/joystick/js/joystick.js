@@ -5,10 +5,22 @@ const con = connection('joystickPage', 'gamePage', console.log);
 const direction = document.querySelector('#direction');
 const pointer = document.querySelector('#pointer');
 const region = regionFactory(direction);
+const freezeCamera = document.querySelector('.freeze-camera');
 
+let shouldFreezeCamera = false;
 let pointerRect = pointer.getBoundingClientRect();
 let lastRegion = null;
 let rAFCalled = false;
+
+freezeCamera.addEventListener('touchstart', e => {
+    e.preventDefault();
+    shouldFreezeCamera = true
+});
+
+freezeCamera.addEventListener('touchend', e => {
+    e.preventDefault();
+    shouldFreezeCamera = false
+});
 
 addEventListener("orientationchange", _ => {
     setTimeout(() => {
@@ -78,6 +90,11 @@ Array.from(document.querySelectorAll('.action-button'))
     });
 
 addEventListener('devicemotion', e => {
+
+    if (shouldFreezeCamera) {
+        return;
+    }
+
     if (!rAFCalled) {
         rAFCalled = true;
         requestAnimationFrame(_ => {

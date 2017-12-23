@@ -57,7 +57,7 @@ function treatActionEvent(data) {
         code: data.code,
         bubbles: true
     });
-    event.keyCode = 32;
+    event.keyCode = parseInt(data.code);
 
     document.body.dispatchEvent(event);
 }

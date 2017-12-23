@@ -8,9 +8,12 @@ const region = regionFactory(direction);
 
 let pointerRect = pointer.getBoundingClientRect();
 let lastRegion = null;
+let rAFCalled = false;
 
 addEventListener("orientationchange", _ => {
-    pointerRect = pointer.getBoundingClientRect();
+    setTimeout(() => {
+        pointerRect = pointer.getBoundingClientRect();
+    }, 1000);
 });
 
 

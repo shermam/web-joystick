@@ -16,7 +16,7 @@ const regions = [
     [87, 68]
 ];
 
-window.conectar = function () {
+//window.conectar = function () {
     connection('gamePage', 'joystickPage', data => {
         document.querySelector('h1').innerHTML = data;
         data = JSON.parse(data);
@@ -25,32 +25,46 @@ window.conectar = function () {
             return;
         }
 
-        if (data.code === 'KeyO') {
-
-            const event = new Event(evtTypes[data.event], {
-                code: data.code,
-                bubbles: true
-            });
-            event.keyCode = 32;
-
-            document.body.dispatchEvent(event);
-
-            return;
+        switch (data.type) {
+            case 'direction':
+                treatDirectionEvent(data)
+                break;
+            case 'action':
+                treatActionEvent(data)
+                break;
+            case 'motion':
+                treatMotionEvent(data)
+                break;
         }
 
-        const region = regions[data.code];
-
-        region.forEach(code => {
-
-            const event = new Event(evtTypes[data.event], {
-                code: data.code,
-                bubbles: true
-            });
-            event.keyCode = code;
-
-            document.body.dispatchEvent(event);
-        });
-
-
     });
-};
+//};
+
+function treatMotionEvent(data) {
+    
+}
+
+function treatActionEvent(data) {
+    const event = new Event(evtTypes[data.event], {
+        code: data.code,
+        bubbles: true
+    });
+    event.keyCode = 32;
+
+    document.body.dispatchEvent(event);
+}
+
+function treatDirectionEvent(data) {
+    const region = regions[data.code];
+
+    region.forEach(code => {
+
+        const event = new Event(evtTypes[data.event], {
+            code: data.code,
+            bubbles: true
+        });
+        event.keyCode = code;
+
+        document.body.dispatchEvent(event);
+    });
+}

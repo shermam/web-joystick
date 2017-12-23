@@ -4,7 +4,7 @@
     padding: 0;
     font-size: 30px;
 }
-/* 
+
 body, html{
     display: flex;
     flex-direction: row;
@@ -126,4 +126,4 @@ body, html{
     .half{
         display: none;
     }
-} */
+}

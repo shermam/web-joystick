@@ -15,7 +15,7 @@ export default function connection(local, remote, ondata) {
 
         _connection.peer.on('error', e => {
             userData.update({ joystickPage: 0, gamePage: 0 });
-            //console.log('error', err);
+            //console.log('error', e);
         });
 
         _connection.peer.on('signal', function (data) {

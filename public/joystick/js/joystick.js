@@ -74,31 +74,7 @@ Array.from(document.querySelectorAll('.action-button'))
         });
     });
 
-const centerTrashHold = 1;
-let centerTimeout;
-
-let _offsetAlpha = 0;
-let _offsetGamma = 0;
-
-let orientationAlpha = 0;
-let oriententionGamma = 0;
-
-let changeX = 0;
-let changeY = 0;
-
-let rAFCalled = false;
-
 addEventListener('devicemotion', e => {
-    resetCenterTimeout(e.rotationRate.alpha, e.rotationRate.beta);
-});
-
-addEventListener('deviceorientation', e => {
-    orientationAlpha = normalizeAlpha(e.alpha, e.gamma);
-    oriententionGamma = normalizeGamma(e.gamma);
-
-    changeX = mapRange(offsetAlpha(), 90, 270, 0, 100);
-    changeY = mapRange(oriententionGamma + _offsetGamma, -90, 90, 0, 100);
-
     if (!rAFCalled) {
         rAFCalled = true;
         requestAnimationFrame(_ => {
@@ -106,8 +82,8 @@ addEventListener('deviceorientation', e => {
             send({
                 event: 'camera',
                 code: {
-                    x: changeX,
-                    y: changeY
+                    x: e.rotationRate.alpha,
+                    y: e.rotationRate.beta
                 },
                 type: 'motion'
             });
@@ -115,50 +91,3 @@ addEventListener('deviceorientation', e => {
     }
 
 });
-
-function offsetAlpha() {
-    const retorno = orientationAlpha + _offsetAlpha;
-    if (retorno > 360) {
-        return retorno - 360;
-    } else if(retorno < 0){
-        return retorno + 360;
-    }
-
-    return retorno;
-}
-
-function normalizeAlpha(alpha, gamma) {
-    return (((gamma > 0 ? 0 : 180) + alpha) % 360) ;
-}
-
-function normalizeGamma(gamma) {
-    return gamma > 0 ? gamma : 180 + gamma;
-}
-
-function center() {
-    _offsetAlpha = 180 - orientationAlpha;
-    _offsetGamma = 0 - oriententionGamma;
-}
-
-function resetCenterTimeout(alpha, beta) {
-    if (alpha < centerTrashHold && beta < centerTrashHold) {
-        return;
-    }
-
-    clearTimeout(centerTimeout);
-
-    console.log('entrou aqui');
-
-    centerTimeout = setTimeout(() => {
-        center();
-        console.log("center");
-    }, 3000);
-};
-
-function mapRange(num, fromIni, toIni, fromFim, toFim) {
-    var rangeInicio = toIni - fromIni;
-    var rangeFim = toFim - fromFim;
-    var fator = rangeFim / rangeInicio;
-    return (num - fromIni) * fator + fromFim;
-}
-

@@ -16,9 +16,9 @@ const regions = [
     [87, 68]
 ];
 
-//window.conectar = function () {
+window.conectar = function () {
     connection('gamePage', 'joystickPage', data => {
-        document.querySelector('h1').innerHTML = data;
+        //document.querySelector('h1').innerHTML = data;
         data = JSON.parse(data);
 
         if (data.code === null) {
@@ -38,10 +38,18 @@ const regions = [
         }
 
     });
-//};
+};
 
 function treatMotionEvent(data) {
-    
+
+    const event = new Event('mousemove', {
+        bubbles: true
+    });
+
+    event.movementX = -data.code.x * 4;
+    event.movementY = data.code.y * 4;
+
+    document.body.dispatchEvent(event);
 }
 
 function treatActionEvent(data) {
